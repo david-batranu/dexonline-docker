@@ -1,0 +1,19 @@
+version: "2"
+services:
+  mariadb:
+    image: mariadb:10
+    volumes:
+      - ./db/:/root/db/
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+
+  httpd:
+    build: php
+    ports:
+      - "80:80"
+    volumes:
+      - ./src/dexonline/:/var/www/html
+
+
+# httpd:
+# docker-php-ext-install -j5 pdo mysqli
