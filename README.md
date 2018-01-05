@@ -24,7 +24,7 @@ docker-compose up -d
 
 ### Setup & import database
 ```
-docker-compose exec mariadb
+docker-compose exec mariadb bash
 mysql -uroot -padmin -e "create database DEX character set utf8"
 zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX
 ^D
@@ -32,7 +32,7 @@ zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX
 
 ### Migrate
 ```
-docker-compose exec httpd
+docker-compose exec httpd bash
 tools/setup.sh
 php tools/migration.php
 ^D
