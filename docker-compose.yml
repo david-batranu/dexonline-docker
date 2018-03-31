@@ -4,6 +4,8 @@ services:
     image: mariadb:10
     volumes:
       - ./db/:/root/db/
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "admin"
 
