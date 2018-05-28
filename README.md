@@ -4,6 +4,12 @@
 * https://docs.docker.com/compose/install/
 
 
+### Clone this repo
+```
+git clone git@github.com:david-batranu/dexonline-docker.git
+cd dexonline-docker
+```
+
 ### Grab code and database
 ```
 git clone git@github.com:dexonline/dexonline.git src/dexonline
