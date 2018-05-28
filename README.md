@@ -20,7 +20,7 @@ wget -O ./db/dex-database.sql.gz https://dexonline.ro/static/download/dex-databa
 ```
 sudo chown 33:33 -R src/dexonline
 sudo setfacl -R -m u:33:rwX src/dexonline && sudo setfacl -dR -m u:33:rwX src/dexonline
-sudo setfacl -R -m u:$UID:rwX src/dexonline && sudo setfacl -dR -m u:$UID:rwX src/dexonline
+sudo setfacl -R -m u:$USER:rwX src/dexonline && sudo setfacl -dR -m u:$USER:rwX src/dexonline
 ```
 
 ### Start containers
@@ -43,3 +43,14 @@ tools/setup.sh
 php tools/migration.php
 ^D
 ```
+
+### Update dex.conf
+```
+sed -i 's|database = mysql://root@localhost/DEX|database = mysql://root:admin@mariadb/DEX|' src/dexonline/dex.conf
+```
+
+And you're done!
+
+### Makefile
+Instead of following the above steps, you can also attempt the automated method, via Makefile.
+Just clone this repo and run `make`.
