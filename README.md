@@ -43,6 +43,8 @@ zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX
 ^D
 ```
 
+_Note: The last command may take up a couple of minutes to complete._
+
 ### Migrate
 ```
 docker-compose exec httpd bash
