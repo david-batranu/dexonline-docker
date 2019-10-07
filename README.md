@@ -5,38 +5,38 @@
 
 
 ### Clone this repo
-```
+```sh
 git clone git@github.com:david-batranu/dexonline-docker.git
 cd dexonline-docker
 ```
 
 ### Grab code and database
-```
+```sh
 git clone git@github.com:dexonline/dexonline.git src/dexonline
 wget -O ./db/dex-database.sql.gz https://dexonline.ro/static/download/dex-database.sql.gz
 ```
 
 ### Make www-data (container user: 33) owner, allow current user to edit
 #### Linux:
-```
+```sh
 sudo chown 33:33 -R src/dexonline
 sudo setfacl -R -m u:33:rwX src/dexonline && sudo setfacl -dR -m u:33:rwX src/dexonline
 sudo setfacl -R -m u:$USER:rwX src/dexonline && sudo setfacl -dR -m u:$USER:rwX src/dexonline
 ```
 
 #### macOS:
-```
+```sh
 sudo chown -R 33:33 src/dexonline
 sudo chmod -R +a "user:$USER allow delete,readattr,writeattr,readextattr,writeextattr,readsecurity,writesecurity,chown,list,search,add_file,add_subdirectory,delete_child,file_inherit,directory_inherit" src/dexonline
 ```
 
 ### Start containers
-```
+```sh
 docker-compose up -d
 ```
 
 ### Setup & import database
-```
+```sh
 docker-compose exec mariadb bash
 mysql -uroot -padmin -e "create database DEX character set utf8"
 zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX
@@ -46,7 +46,7 @@ zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX
 _Note: The last command may take up a couple of minutes to complete._
 
 ### Migrate
-```
+```sh
 docker-compose exec httpd bash
 tools/setup.sh
 php tools/migration.php
@@ -55,12 +55,12 @@ php tools/migration.php
 
 ### Update Config.php
 #### Linux
-```
+```sh
 sed -i "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/DEX'|" src/dexonline/Config.php
 ```
 
 #### macOS
-```
+```sh
 sed -i "" "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/DEX'|" src/dexonline/Config.php
 ```
 
