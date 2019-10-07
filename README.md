@@ -44,9 +44,9 @@ php tools/migration.php
 ^D
 ```
 
-### Update dex.conf
+### Update Config.php
 ```
-sed -i 's|database = mysql://root@localhost/DEX|database = mysql://root:admin@mariadb/DEX|' src/dexonline/dex.conf
+sed -i "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/DEX'|" src/dexonline/Config.php
 ```
 
 And you're done!
