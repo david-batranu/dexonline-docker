@@ -64,7 +64,7 @@ sed -i "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root
 sed -i "" "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/DEX'|" src/dexonline/Config.php
 ```
 
-And you're done!
+And you're done! Open `localhost` in your browser to access the website.
 
 ### Makefile
 Instead of following the above steps, you can also attempt the automated method, via Makefile.
