@@ -2,12 +2,19 @@
 
 DIR_SRC=src/dexonline
 URL_DB=https://dexonline.ro/static/download/dex-database.sql.gz
+DIR_DB=db/dex-database.sql.gz
 
-all: clone-src update-permissions start-containers sleep setup-database setup-application
+all: clone-src download-db update-permissions start-containers sleep setup-database setup-application
 
 clone-src:
+ifeq (,$(wildcard ${DIR_SRC}))
 	git clone git@github.com:dexonline/dexonline.git ${DIR_SRC}
-	wget -O ./db/dex-database.sql.gz ${URL_DB}
+endif
+
+download-db:
+ifeq (,$(wildcard ${DIR_DB}))
+	wget -O ${DIR_DB} ${URL_DB}
+endif
 
 update-permissions:
 	sudo chown 33:33 -R src
