@@ -1,7 +1,7 @@
 # Automated setup
 
-URL_DB=https://dexonline.ro/static/download/dex-database.sql.gz
 DIR_SRC=src/dexonline
+URL_DB=https://dexonline.ro/static/download/dex-database.sql.gz
 
 all: clone-src update-permissions start-containers sleep setup-database setup-application
 
@@ -10,9 +10,9 @@ clone-src:
 	wget -O ./db/dex-database.sql.gz ${URL_DB}
 
 update-permissions:
-	sudo chown 33:33 -R src/
-	sudo setfacl -R -m u:33:rwX,u:${USER}:rwX ./src
-	sudo setfacl -dR -m u:33:rwX,u:${USER}:rwX ./src
+	sudo chown 33:33 -R src
+	sudo setfacl -R -m u:33:rwX,u:${USER}:rwX src
+	sudo setfacl -dR -m u:33:rwX,u:${USER}:rwX src
 
 start-containers:
 	docker-compose up -d
