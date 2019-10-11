@@ -24,12 +24,12 @@ setup-database:
 	docker-compose exec mariadb bash -c 'pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline'
 
 setup-application:
-  # First create Config.php from Config.php.sample...
+	# First create Config.php from Config.php.sample...
 	docker-compose exec httpd bash tools/setup.sh
-  # ... then customize it...
+	# ... then customize it...
 	sed -i "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/dexonline'|" ${DIR_SRC}/Config.php
 	sed -i "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" ${DIR_SRC}/Config.php
-  # ... and finally run tools/migration.php, which needs a working database
+	# ... and finally run tools/migration.php, which needs a working database
 	docker-compose exec httpd bash -c 'php tools/migration.php'
 
 sleep:
