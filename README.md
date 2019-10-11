@@ -48,12 +48,9 @@ pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline
 
 _Note: The last command may take up a couple of minutes to complete._
 
-### Migrate
+### Setup the code
 ```sh
-docker-compose exec httpd bash
-tools/setup.sh
-php tools/migration.php
-^D
+docker-compose exec httpd bash -c 'tools/setup.sh'
 ```
 
 ### Update Config.php
@@ -67,6 +64,11 @@ sed -i "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" src/dexonline/Config
 ```sh
 sed -i "" "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/dexonline'|" src/dexonline/Config.php
 sed -i "" "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" src/dexonline/Config.php
+```
+
+### Migrate the database
+```sh
+docker-compose exec httpd bash -c 'php tools/migration.php'
 ```
 
 And you're done! Open `localhost` in your browser to access the website.
