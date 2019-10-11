@@ -20,15 +20,15 @@ wget -O ./db/dex-database.sql.gz https://dexonline.ro/static/download/dex-databa
 ### Make www-data (container user: 33) owner, allow current user to edit
 #### Linux:
 ```sh
-sudo chown 33:33 -R src/dexonline
-sudo setfacl -R -m u:33:rwX src/dexonline && sudo setfacl -dR -m u:33:rwX src/dexonline
-sudo setfacl -R -m u:$USER:rwX src/dexonline && sudo setfacl -dR -m u:$USER:rwX src/dexonline
+sudo chown 33:33 -R src
+sudo setfacl -R -m u:33:rwX,u:$USER:rwX src
+sudo setfacl -dR -m u:33:rwX,u:$USER:rwX src
 ```
 
 #### macOS:
 ```sh
-sudo chown -R 33:33 src/dexonline
-sudo chmod -R +a "user:$USER allow delete,readattr,writeattr,readextattr,writeextattr,readsecurity,writesecurity,chown,list,search,add_file,add_subdirectory,delete_child,file_inherit,directory_inherit" src/dexonline
+sudo chown -R 33:33 src
+sudo chmod -R +a "user:$USER allow delete,readattr,writeattr,readextattr,writeextattr,readsecurity,writesecurity,chown,list,search,add_file,add_subdirectory,delete_child,file_inherit,directory_inherit" src
 ```
 
 ### Start containers
