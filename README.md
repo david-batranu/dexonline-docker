@@ -3,6 +3,7 @@
 * https://docs.docker.com/engine/installation/linux/docker-ce/debian/
 * https://docs.docker.com/compose/install/
 
+Start the `docker` service (some distros start it by default).
 
 ### Clone this repo
 ```sh
@@ -38,8 +39,10 @@ docker-compose up -d
 ### Setup & import database
 ```sh
 docker-compose exec mariadb bash
-mysql -uroot -padmin -e "create database DEX character set utf8"
-zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX
+apt update
+apt install pv
+mysql -uroot -padmin -e "create database dexonline character set utf8mb4"
+pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline
 ^D
 ```
 
@@ -56,12 +59,14 @@ php tools/migration.php
 ### Update Config.php
 #### Linux
 ```sh
-sed -i "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/DEX'|" src/dexonline/Config.php
+sed -i "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/dexonline'|" src/dexonline/Config.php
+sed -i "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" src/dexonline/Config.php
 ```
 
 #### macOS
 ```sh
-sed -i "" "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/DEX'|" src/dexonline/Config.php
+sed -i "" "s|DATABASE = 'mysql://root@localhost/dexonline'|DATABASE = 'mysql://root:admin@mariadb/dexonline'|" src/dexonline/Config.php
+sed -i "" "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" src/dexonline/Config.php
 ```
 
 And you're done! Open `localhost` in your browser to access the website.

@@ -18,13 +18,18 @@ start-containers:
 	docker-compose up -d
 
 setup-database:
-	docker-compose exec mariadb mysql -uroot -padmin -e "create database DEX character set utf8"
-	docker-compose exec mariadb bash -c 'zcat /root/db/dex-database.sql.gz | mysql -uroot -padmin DEX'
+  docker-compose exec mariadb apt update
+  docker-compose exec mariadb apt install pv
+	docker-compose exec mariadb mysql -uroot -padmin -e "create database dexonline character set utf8mb4"
+	docker-compose exec mariadb bash -c 'pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline'
 
 setup-application:
-	docker-compose exec httpd bash tools/setup.sh
+  # Customize Config.php before running tools/migration.php, which needs a
+  # working database
+	sed -i 's|database = mysql://root@localhost/dexonline|database = mysql://root:admin@mariadb/dexonline|' ${DIR_SRC}/dex.conf
+  sed -i "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" src/dexonline/Config.php
+  docker-compose exec httpd bash tools/setup.sh
 	docker-compose exec httpd bash -c 'php tools/migration.php'
-	sed -i 's|database = mysql://root@localhost/DEX|database = mysql://root:admin@mariadb/DEX|' ${DIR_SRC}/dex.conf
 
 sleep:
 	echo "Sleeping 10 seconds..."
