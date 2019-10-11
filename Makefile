@@ -18,8 +18,6 @@ start-containers:
 	docker-compose up -d
 
 setup-database:
-	docker-compose exec mariadb apt update
-	docker-compose exec mariadb apt install pv
 	docker-compose exec mariadb mysql -uroot -padmin -e "create database dexonline character set utf8mb4"
 	docker-compose exec mariadb bash -c 'pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline'
 
