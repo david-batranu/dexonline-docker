@@ -39,8 +39,6 @@ docker-compose up -d
 ### Setup & import database
 ```sh
 docker-compose exec mariadb bash
-apt update
-apt install pv
 mysql -uroot -padmin -e "create database dexonline character set utf8mb4"
 pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline
 ^D
