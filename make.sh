@@ -42,8 +42,12 @@ _start-containers() {
 _setup-database() {
 	set -x
 
-	docker-compose exec mariadb mysql -uroot -padmin -e "create database dexonline character set utf8mb4"
-	docker-compose exec mariadb bash -c "pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline"
+	database="$(docker-compose exec mariadb mysql -uroot -padmin -e "select schema_name from information_schema.schemata where schema_name = 'dexonline'" --silent --silent)"
+
+	if [[ -z "${database}" ]]; then
+		docker-compose exec mariadb mysql -uroot -padmin -e "create database dexonline character set utf8mb4"
+		docker-compose exec mariadb bash -c "pv /root/db/dex-database.sql.gz | zcat | mysql -uroot -padmin dexonline"
+	fi
 }
 
 _setup-application() {
