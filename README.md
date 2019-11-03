@@ -71,6 +71,6 @@ docker-compose exec httpd bash -c 'php tools/migration.php'
 
 And you're done! Open `localhost` in your browser to access the website.
 
-### Makefile
-Instead of following the above steps, you can also attempt the automated method, via Makefile.
-Just clone this repo and run `make`.
+### `make.sh` script
+Instead of following the steps above, you can also try the automated method, via the `make.sh` script.
+Just clone this repo and run `./make.sh`.
