@@ -114,10 +114,10 @@ available tasks, in the same order as in the list above.
 	"
 }
 
-for task in "$@"; do
-    eval "_${task}"
-
-    exit 0
-done
-
-_all
+if [[ $# -eq 0 ]]; then
+	_all
+else
+	for task in "$@"; do
+    	eval "_${task}"
+	done
+fi
