@@ -91,6 +91,29 @@ _all() {
 	_setup-application
 }
 
+_tasks() {
+	echo "
+Available tasks:
+- clone-src:
+	Clones the 'dexonline/dexonline' repo to '${DIR_SRC}' if it doesn't exist already.
+- download-db:
+	Downloads the database from '${URL_DB}' to '${DIR_DB}' if it doesn't exist already.
+- update-permissions:
+	Sets the necessary permissions to the '${DIR_SRC}' directory.
+- start-containers:
+	Starts the Docker containers.
+- sleep:
+	Pauses the execution of the next tasks for 10 seconds. When running the 'all' task, it is used to wait for the containers to finish starting.
+- setup-database:
+	Creates the dexonline database and imports the downloaded data into it, if it doesn't exist.
+- setup-application:
+	Prepares the application for running.
+
+Not specifying a task at all, or running the 'all' task, runs all the
+available tasks, in the same order as in the list above.
+	"
+}
+
 for task in "$@"; do
     eval "_${task}"
 

@@ -74,3 +74,4 @@ And you're done! Open `localhost` in your browser to access the website.
 ### `make.sh` script
 Instead of following the steps above, you can also try the automated method, via the `make.sh` script.
 Just clone this repo and run `./make.sh`.
+Use `./make.sh tasks` to get the list of all available tasks.
