@@ -65,6 +65,9 @@ _setup-application() {
 		sed -i "s|URL_PREFIX = '/dexonline/www/'|URL_PREFIX = '/'|" "${DIR_SRC}/Config.php"
 	fi
 
+	docker-compose exec httpd bash -c "touch /var/log/dexonline.log"
+	docker-compose exec httpd bash -c "chmod 666 /var/log/dexonline.log"
+
 	# ... and finally run tools/migration.php, which needs a working database
 	docker-compose exec httpd bash -c "php tools/migration.php"
 }
