@@ -25,6 +25,11 @@ sudo setfacl -R -m u:33:rwX,u:$USER:rwX src
 sudo setfacl -dR -m u:33:rwX,u:$USER:rwX src
 ```
 
+If you are using `SELinux` in `Enforcing` mode (probably you do if you use a RedHat distro), you have to also run:
+```sh
+sudo chcon -Rt svirt_sandbox_file_t .
+```
+
 #### macOS:
 ```sh
 sudo chown -R 33:33 src
@@ -34,6 +39,16 @@ sudo chmod -R +a "user:$USER allow delete,readattr,writeattr,readextattr,writeex
 ### Start containers
 ```sh
 docker-compose up -d
+```
+
+### Firewall
+On Linux machines using `firewalld` you have to add the network interface created by docker to the trusted zone:
+```sh
+network=$(docker network ls | grep dexonline | awk -F ' ' '{print $1}')
+gateway=$(docker network inspect ${network} | grep Gateway | grep -Po "[\d\.]+")
+interface=$(ifconfig | awk -v g="${gateway}" -F ' ' '$1=="inet" && $2==g {print old} {old=$1}' | sed 's/:$//')
+sudo firewall-cmd --permanent --zone=trusted --add-interface=${interface}
+sudo firewall-cmd --reload
 ```
 
 ### Setup & import database
