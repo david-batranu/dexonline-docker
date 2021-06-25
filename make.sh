@@ -8,7 +8,7 @@ _clone-src() {
 	set -x
 
 	if [[ ! -d "${DIR_SRC}" ]]; then
-		git clone git@github.com:dexonline/dexonline.git "${DIR_SRC}"
+		git clone https://github.com/dexonline/dexonline/ "${DIR_SRC}"
 	fi
 }
 
