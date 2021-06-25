@@ -20,6 +20,15 @@ _download-db() {
 	fi
 }
 
+_setup-selinux() {
+    set -x
+
+    if ! command -v getenforce | grep "Enforcing";
+    then
+        sudo chcon -Rt svirt_sandbox_file_t .
+    fi
+}
+
 _update-permissions() {
 	set -x
 
@@ -30,7 +39,8 @@ _update-permissions() {
 		sudo chown 33:33 -R src
 		sudo setfacl -R -m "u:33:rwX,u:${USER}:rwX" src
 		sudo setfacl -dR -m "u:33:rwX,u:${USER}:rwX" src
-	fi
+        _setup-selinux
+    fi
 }
 
 _start-containers() {
