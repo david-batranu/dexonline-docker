@@ -90,6 +90,19 @@ _sleep() {
 	sleep 10
 }
 
+_setup-firewalld() {
+    set -x
+
+    if command -v firewall-cmd;
+    then
+        network=$(docker network ls | grep dexonline | awk -F ' ' '{print $1}')
+        gateway=$(docker network inspect ${network} | grep Gateway | grep -Po "[\d\.]+")
+        interface=$(ifconfig | awk -v g="${gateway}" -F ' ' '$1=="inet" && $2==g {print old} {old=$1}' | sed 's/:$//')
+        sudo firewall-cmd --permanent --zone=trusted --add-interface=${interface}
+        sudo firewall-cmd --reload
+    fi
+}
+
 _all() {
 	set -x
 
@@ -100,6 +113,7 @@ _all() {
 
 	_sleep
 
+    _setup-firewalld
 	_setup-database
 	_setup-application
 }
@@ -117,6 +131,8 @@ Available tasks:
 	Starts the Docker containers.
 - sleep:
 	Pauses the execution of the next tasks for 10 seconds. When running the 'all' task, it is used to wait for the containers to finish starting.
+- setup-firewalld:
+    If firewalld is running on your system then it adds docker's network interface to trusted zone.
 - setup-database:
 	Creates the dexonline database and imports the downloaded data into it, if it doesn't exist.
 - setup-application:
